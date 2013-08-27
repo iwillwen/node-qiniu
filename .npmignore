@@ -13,4 +13,5 @@ results
 
 node_modules
 **.txt
-npm-debug.log
+npm_debug.log
+.git

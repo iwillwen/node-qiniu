@@ -1,0 +1,39 @@
+{
+  "name": "qiniu",
+  "version": "0.0.1",
+  "description": "Qiniu Resource Storage SDK for Node.js",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iwillwen/nodejs-sdk"
+  },
+  "keywords": [
+    "cloud",
+    "storage",
+    "s3",
+    "qiniu",
+    "web-service"
+  ],
+  "author": "iwillwen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/iwillwen/nodejs-sdk/issues"
+  },
+  "dependencies": {
+    "underscore": "~1.5.1",
+    "request": "~2.27.0",
+    "q": "~0.9.6"
+  },
+  "devDependencies": {
+    "async": "~0.2.9",
+    "mocha": "~1.6.0",
+    "should": "~1.2.2"
+  }
+}
