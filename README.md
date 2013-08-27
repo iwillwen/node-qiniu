@@ -384,7 +384,7 @@ var batch = qiniu.batch();
 
 `Batch`中大部分参数与资源对象`Asset`类似，支持查看、移动、复制和删除操作。
 
-```
+```js
 batch
   // 获取文件信息
   .stat(imagesBucket.key('exampleKey'))
