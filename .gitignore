@@ -13,4 +13,8 @@ results
 
 node_modules
 **.txt
+<<<<<<< HEAD
 npm_debug.log
+=======
+npm-debug.log
+>>>>>>> 98e576d304d0ff2be5a9e6d50d61fc2df2f79ab8
