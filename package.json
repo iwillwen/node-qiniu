@@ -8,7 +8,16 @@
     "test": "test"
   },
   "scripts": {
-    "test": "make test"
+    "test": "make test",
+    "blanket": {
+      "pattern": "node-qiniu/lib",
+      "data-cover-flags": {
+        "debug": false
+      }
+    },
+    "travis-cov": {
+      "threshold": 88
+    }
   },
   "repository": {
     "type": "git",
@@ -35,6 +44,9 @@
   "devDependencies": {
     "async": "~0.2.9",
     "mocha": "~1.6.0",
-    "should": "~1.2.2"
+    "should": "~1.2.2",
+    "doxmate": "*",
+    "blanket": "*",
+    "travis-cov": "*"
   }
 }
