@@ -8,14 +8,14 @@
 你可以从 npm 进行安装
 
 ```shell
-npm install qiniu
+npm install node-qiniu
 ```
 
 也可以从 Github 进行下载安装
 
 ```shell
-$ git clone git://github.com/qiniu/nodejs-sdk qiniu
-$ cd qiniu
+$ git clone git://github.com/qiniu/node-qiniu
+$ cd node-qiniu
 $ npm install .
 ```
 
