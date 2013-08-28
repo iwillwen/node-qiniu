@@ -1,6 +1,6 @@
 REPORTER = spec
 
 test:
-  @./node_modules/.bin/mocha -R spec -t 6000
+	@./node_modules/.bin/mocha -t 4000 -R spec
 
 .PHONY: test
