@@ -439,6 +439,9 @@ image.fop()
   });
 ```
 
+## 模块结构
+![模块结构](http://ww2.sinaimg.cn/large/7287333fgw1e8263cvxeaj20mr0glgmp.jpg)
+
 ## License 
 
     (The MIT License)
