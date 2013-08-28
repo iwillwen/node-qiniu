@@ -1,5 +1,5 @@
 {
-  "name": "qiniu",
+  "name": "node-qiniu",
   "version": "6.1.0",
   "description": "Qiniu Resource Storage SDK for Node.js",
   "main": "index.js",

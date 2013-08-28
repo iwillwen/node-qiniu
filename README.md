@@ -1,5 +1,4 @@
 # 七牛 Node.js SDK
-![Travis CI](https://api.travis-ci.org/iwillwen/node-qiniu.png)
 
 该 SDK 适用于 Node.js 0.4.7 及其以上版本，基于 七牛云存储官方API 构建。 若您的服务端是一个基于 Node.js 编写的网络程序，使用此 SDK ， 能让您以非常便捷地方式将数据安全地存储到七牛云存储上。 以便让您应用的终端用户进行高速上传和下载，同时也使得您的服务端更加轻盈。
 
@@ -8,14 +7,14 @@
 你可以从 npm 进行安装
 
 ```shell
-npm install qiniu
+npm install node-qiniu
 ```
 
 也可以从 Github 进行下载安装
 
 ```shell
-$ git clone git://github.com/qiniu/nodejs-sdk qiniu
-$ cd qiniu
+$ git clone git://github.com/qiniu/node-qiniu
+$ cd node-qiniu
 $ npm install .
 ```
 
@@ -99,7 +98,7 @@ imagesBucket.putFile('exampleKey_2', __dirname + '/assets/example.jpg')
 var puttingStream = imagesBucket.createPutStream('exampleKey_3');
 var readingStream = fs.createReadStream(__dirname + '/assets/example.jpg');
 
-readingStream.pipe(readingStream)
+readingStream.pipe(puttingStream)
   .on('error', function(err) {
     console.error(err);
   })
