@@ -1,0 +1,3125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>node-qiniu Documentation</title>
+    <meta name="keywords" content="cloud,storage,s3,qiniu,web-service" />
+    <meta name="description" content="Qiniu Resource Storage SDK for Node.js" />
+    <script src="assets/prettify.js"></script>
+    <script src="assets/jquery-1.8.2.min.js"></script>
+    <script src="bootstrap/js/bootstrap.js"></script>
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/base.css" />
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="./index.html">node-qiniu</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+            
+              <li>
+                <a href="./api.html">API Docs</a>
+              </li>
+            
+            
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <header class="jumbotron subhead">
+      <div class="container">
+        <h1>node-qiniu <small>Version: 6.1.0 By @iwillwen</small></h1>
+        <p class="lead">
+          Qiniu Resource Storage SDK for Node.js
+        </p>
+      </div>
+    </header>
+<div class="container content">
+  <div class="row">
+    <div class="span3 bs-docs-sidebar">
+      <ul class="nav nav-list bs-docs-sidenav affix">
+
+  <li>
+    <a href="#api_asset"><i class="icon-chevron-right"></i>asset</a>
+  </li>
+
+  <li>
+    <a href="#api_batch"><i class="icon-chevron-right"></i>batch</a>
+  </li>
+
+  <li>
+    <a href="#api_bucket"><i class="icon-chevron-right"></i>bucket</a>
+  </li>
+
+  <li>
+    <a href="#api_config"><i class="icon-chevron-right"></i>config</a>
+  </li>
+
+  <li>
+    <a href="#api_fop"><i class="icon-chevron-right"></i>fop</a>
+  </li>
+
+  <li>
+    <a href="#api_image"><i class="icon-chevron-right"></i>image</a>
+  </li>
+
+  <li>
+    <a href="#api_qiniu"><i class="icon-chevron-right"></i>qiniu</a>
+  </li>
+
+  <li>
+    <a href="#api_token"><i class="icon-chevron-right"></i>token</a>
+  </li>
+
+  <li>
+    <a href="#api_utils"><i class="icon-chevron-right"></i>utils</a>
+  </li>
+
+</ul>
+
+    </div>
+    <div class="span9">
+      
+        <section id="api_asset" class="api">
+  <h2>asset: API索引</h2>
+  <ul class="indexs">
+  
+    <li>
+      <a href="#_Asset">Asset</a>
+    </li>
+
+    <li>
+      <a href="#_url">url</a>
+    </li>
+
+    <li>
+      <a href="#_entryUrl">entryUrl</a>
+    </li>
+
+    <li>
+      <a href="#_stat">stat</a>
+    </li>
+
+    <li>
+      <a href="#_move">move</a>
+    </li>
+
+    <li>
+      <a href="#_copy">copy</a>
+    </li>
+
+    <li>
+      <a href="#_remove">remove</a>
+    </li>
+
+    <li>
+      <a href="#_alias">alias</a>
+    </li>
+
+    <li>
+      <a href="#promise_stream">stream</a>
+    </li>
+
+  </ul>
+  <hr />
+
+  
+  <h3 id="_Asset">
+    Asset
+  </h3>
+  
+
+  <p>Asset Class</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>函数</td>
+      <td>Asset()</td> 
+      <td></td>
+      <td>Asset</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>key(String)</td>
+      <td colspan="2">Asset's key</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>parent(Bucket)</td>
+      <td colspan="2">Bucket object</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>function Asset(key, parent, config) {
+  this.key = key;
+  this.parent = parent;
+  this.access_token = new AccessToken();
+
+  this.config = config || {};
+}</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_url">
+    url
+  </h3>
+  
+
+  <p>return the asset url</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Asset.prototype.url()</td> 
+      <td></td>
+      <td>url</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>String</td>
+      <td colspan="2">url</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Asset.prototype.url = function() {
+  return url.format({
+    protocol: 'http',
+    hostname: util.format('%s.qiniudn.com', this.parent.name),
+    pathname: '/' + this.key
+  });
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_entryUrl">
+    entryUrl
+  </h3>
+  
+
+  <p>return the encoded entry url of the asset</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Asset.prototype.entryUrl()</td> 
+      <td></td>
+      <td>entryUrl</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>String</td>
+      <td colspan="2">entry url</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Asset.prototype.entryUrl = function() {
+  return utils.safeEncode(util.format(
+    '%s:%s',
+    this.parent.name, this.key
+  ));
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_stat">
+    stat
+  </h3>
+  
+
+  <p>get the asset's stat</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Asset.prototype.stat()</td> 
+      <td></td>
+      <td>stat</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>callback(Function)</td>
+      <td colspan="2">Callback</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Promise</td>
+      <td colspan="2">promise object</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Asset.prototype.stat = function(callback) {
+  var deferred = Q.defer();
+  callback = callback || noop;
+
+  var path = util.format('/stat/%s', this.entryUrl());
+  var _url = url.format({
+    protocol: 'http',
+    hostname: config.rsUrl,
+    pathname: path
+  });
+
+  var token = this.access_token.token(path, null);
+
+  request({
+    url: _url,
+    method: 'POST',
+    headers: {
+      'Authorization': token,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  }, function(err, res, body) {
+    if (err) {
+      deferred.reject(err);
+      return callback(err);
+    }
+
+    var result = JSON.parse(body);
+
+    deferred.resolve(result);
+    callback(null, result);
+  });
+
+  return deferred.promise;
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_move">
+    move
+  </h3>
+  
+
+  <p>move the asset to another position</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Asset.prototype.move()</td> 
+      <td></td>
+      <td>move</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>destAsset(Asset)</td>
+      <td colspan="2">dest Asset</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>callback(Function)</td>
+      <td colspan="2">Callback</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Promise</td>
+      <td colspan="2">promise object</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Asset.prototype.move = function(destAsset, callback) {
+  var deferred = Q.defer();
+  callback = callback || noop;
+
+  var path = util.format('/move/%s/%s', this.entryUrl(), destAsset.entryUrl());
+  var _url = url.format({
+    protocol: 'http',
+    hostname: config.rsUrl,
+    pathname: path
+  });
+
+  var token = this.access_token.token(path, null);
+
+  request({
+    url: _url,
+    method: 'POST',
+    headers: {
+      'Authorization': token,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  }, function(err, res) {
+    if (err) {
+      deferred.reject(err);
+      return callback(err);
+    }
+
+
+    deferred.resolve();
+    callback(null);
+  });
+
+  return deferred.promise;
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_copy">
+    copy
+  </h3>
+  
+
+  <p>make a copy of the asset to another position</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Asset.prototype.copy()</td> 
+      <td></td>
+      <td>copy</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>destAsset(Asset)</td>
+      <td colspan="2">dest Asset</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>callback(Function)</td>
+      <td colspan="2">Callback</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Promise</td>
+      <td colspan="2">promise object</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Asset.prototype.copy = function(destAsset, callback) {
+  var deferred = Q.defer();
+  callback = callback || noop;
+
+  var path = util.format('/copy/%s/%s', this.entryUrl(), destAsset.entryUrl());
+  var _url = url.format({
+    protocol: 'http',
+    hostname: config.rsUrl,
+    pathname: path
+  });
+
+  var token = this.access_token.token(path, null);
+
+  request({
+    url: _url,
+    method: 'POST',
+    headers: {
+      'Authorization': token,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  }, function(err, res, body) {
+    if (err) {
+      deferred.reject(err);
+      return callback(err);
+    }
+
+    deferred.resolve();
+    callback(null);
+  });
+
+  return deferred.promise;
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_remove">
+    remove
+  </h3>
+  
+
+  <p>delete the asset</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Asset.prototype.remove()</td> 
+      <td></td>
+      <td>remove</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>callback(Function)</td>
+      <td colspan="2">Callback</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Promise</td>
+      <td colspan="2">promise object</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Asset.prototype.remove = function(callback) {
+  var deferred = Q.defer();
+  callback = callback || noop;
+
+  var path = util.format('/delete/%s', this.entryUrl());
+  var _url = url.format({
+    protocol: 'http',
+    hostname: config.rsUrl,
+    pathname: path
+  });
+
+  var token = this.access_token.token(path, null);
+
+  request({
+    url: _url,
+    method: 'POST',
+    headers: {
+      'Authorization': token,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  }, function(err, res, body) {
+    if (err) {
+      deferred.reject(err);
+      return callback(err);
+    }
+
+    deferred.resolve();
+    callback(null);
+  });
+
+  return deferred.promise;
+};
+
+Asset.prototype.fop = function(config) {
+  return new Fop(this, config);
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_alias">
+    alias
+  </h3>
+  
+
+  <p>return a image with a established format</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Asset.prototype.alias()</td> 
+      <td></td>
+      <td>alias</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>alias(String)</td>
+      <td colspan="2">alias name</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>callback(Function)</td>
+      <td colspan="2">Callback</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Promise</td>
+      <td colspan="2">promise object</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Asset.prototype.alias = function(alias, callback) {
+  var deferred = Q.defer();
+  callback = callback || noop;
+
+  var _url = this.url();
+
+  _url += util.format('%s%s', this.config.separate, alias);
+  
+  var recive = new dataStream();
+  request(_url).pipe(recive)
+    .on('complete', function() {
+      var data = this.body();
+
+      deferred.resolve(data);
+      callback(null, data);
+    })
+    .on('error', function(err) {
+      deferred.reject(err);
+      callback(err);
+    });
+
+  var promise = deferred.promise;</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="promise_stream">
+    stream
+  </h3>
+  
+
+  <p>return the image stream</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>promise.stream()</td> 
+      <td>promise</td>
+      <td>stream</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Stream</td>
+      <td colspan="2">stream</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>promise.stream = function() {
+    return recive;
+  };
+
+  return promise;
+};
+
+module.exports = Asset;
+
+function noop() {
+  return false;
+}</code></pre></td>
+    </tr>
+  
+  </table>
+  
+</section>
+      
+        <section id="api_batch" class="api">
+  <h2>batch: API索引</h2>
+  <ul class="indexs">
+  
+    <li>
+      <a href="#_Batch">Batch</a>
+    </li>
+
+    <li>
+      <a href="#_stat">stat</a>
+    </li>
+
+    <li>
+      <a href="#_move">move</a>
+    </li>
+
+    <li>
+      <a href="#_copy">copy</a>
+    </li>
+
+    <li>
+      <a href="#_remove">remove</a>
+    </li>
+
+    <li>
+      <a href="#_exec">exec</a>
+    </li>
+
+  </ul>
+  <hr />
+
+  
+  <h3 id="_Batch">
+    Batch
+  </h3>
+  
+
+  <p>multiple assets control</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>函数</td>
+      <td>Batch()</td> 
+      <td></td>
+      <td>Batch</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>_config(Object)</td>
+      <td colspan="2">config</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>function Batch(_config) {
+  this.config = _.extend(_.clone(config), _config);
+
+  var token       = require('./token')(this.config);
+  var AccessToken = token.AccessToken;
+
+  this.access_token = new AccessToken();
+  this.op = '';
+}</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_stat">
+    stat
+  </h3>
+  
+
+  <p>Queue a stat control</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Batch.prototype.stat()</td> 
+      <td></td>
+      <td>stat</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>asset(Asset)</td>
+      <td colspan="2">asset</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Batch</td>
+      <td colspan="2">Batch</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Batch.prototype.stat = function(asset) {
+  this.op += '&amp;' + genOpUrl('stat', asset);
+
+  return this;
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_move">
+    move
+  </h3>
+  
+
+  <p>Queue a move control</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Batch.prototype.move()</td> 
+      <td></td>
+      <td>move</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>src(Asset)</td>
+      <td colspan="2">source asset</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>dest(Asset)</td>
+      <td colspan="2">dest asset</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Batch</td>
+      <td colspan="2">Batch</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Batch.prototype.move = function(src, dest) {
+  this.op += '&amp;' + genOpUrl('move', src, dest);
+  
+  return this;
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_copy">
+    copy
+  </h3>
+  
+
+  <p>Queue a copy control</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Batch.prototype.copy()</td> 
+      <td></td>
+      <td>copy</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>src(Asset)</td>
+      <td colspan="2">source asset</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>dest(Asset)</td>
+      <td colspan="2">dest asset</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Batch</td>
+      <td colspan="2">Batch</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Batch.prototype.copy = function(src, dest) {
+  this.op += '&amp;' + genOpUrl('copy', src, dest);
+  
+  return this;
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_remove">
+    remove
+  </h3>
+  
+
+  <p>Queue a delete control</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Batch.prototype.remove()</td> 
+      <td></td>
+      <td>remove</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>asset(Asset)</td>
+      <td colspan="2">asset</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Batch</td>
+      <td colspan="2">Batch</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Batch.prototype.remove = function(asset) {
+  this.op += '&amp;' + genOpUrl('delete', asset);
+
+  return this;
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_exec">
+    exec
+  </h3>
+  
+
+  <p>Execute the queue</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Batch.prototype.exec()</td> 
+      <td></td>
+      <td>exec</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>callback(Function)</td>
+      <td colspan="2">Callback</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Promise</td>
+      <td colspan="2">promise object</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Batch.prototype.exec = function(callback) {
+  var deferred = Q.defer();
+  callback = callback || noop;
+
+  var _url = url.format({
+    protocol: 'http',
+    hostname: this.config.rsUrl,
+    pathname: '/batch'
+  });
+  var body = this.op.substr(1);
+  var token = this.access_token.token('/batch', body);
+
+  request({
+    url: _url,
+    method: 'POST',
+    body: body,
+    headers: {
+      'Authorization': token,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+  }, function(err, res, body) {
+    if (err) {
+      deferred.reject(err);
+      return callback(err);
+    }
+
+    if (body.length &gt; 0) {
+      var rows = JSON.parse(body);
+
+      deferred.resolve(rows);
+      callback(null, rows);
+    } else {
+      err = new Error(http.STATUS_CODES[503]);
+
+      deferred.reject(err);
+      callback(err);
+    }
+  });
+
+  return deferred.promise;
+};
+
+module.exports = Batch;
+
+function genOpUrl(op, src, dest) {
+  var rtn = null;
+
+  switch (op) {
+    case 'stat':
+      rtn = util.format('op=/stat/%s', src.entryUrl());
+      break;
+    case 'move':
+      rtn = util.format('op=/move/%s/%s', src.entryUrl(), dest.entryUrl());
+      break;
+    case 'copy':
+      rtn = util.format('op=/copy/%s/%s', src.entryUrl(), dest.entryUrl());
+      break;
+    case 'delete':
+      rtn = util.format('op=/delete/%s', src.entryUrl());
+      break;
+  }
+
+  return rtn;
+}
+
+function noop() {
+  return false;
+}</code></pre></td>
+    </tr>
+  
+  </table>
+  
+</section>
+      
+        <section id="api_bucket" class="api">
+  <h2>bucket: API索引</h2>
+  <ul class="indexs">
+  
+    <li>
+      <a href="#_Bucket">Bucket</a>
+    </li>
+
+    <li>
+      <a href="#_putFile">putFile</a>
+    </li>
+
+    <li>
+      <a href="#_createPutStream">createPutStream</a>
+    </li>
+
+    <li>
+      <a href="#_getFile">getFile</a>
+    </li>
+
+    <li>
+      <a href="#_createGetStream">createGetStream</a>
+    </li>
+
+    <li>
+      <a href="#_key">key</a>
+    </li>
+
+  </ul>
+  <hr />
+
+  
+  <h3 id="_Bucket">
+    Bucket
+  </h3>
+  
+
+  <p>Bucket<br />Example:</p>
+
+<div class="highlight"><pre lang="">var imagesBucket = new qiniu.Bucket('images', {
+  // special option
+});
+</pre></div>
+
+  <table class="table">
+  
+    <tr>
+      <td>函数</td>
+      <td>Bucket()</td> 
+      <td></td>
+      <td>Bucket</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>bucketName(String)</td>
+      <td colspan="2">bucket's name</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>config(Object)</td>
+      <td colspan="2">config</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>function Bucket(bucketName, config) {
+  config = config || {};
+
+  this.name = bucketName;
+  this.config = _.extend(globalConfig, config, {
+    scope: bucketName
+  });
+}</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_putFile">
+    putFile
+  </h3>
+  
+
+  <p>Upload a file<br />Example:</p>
+
+<div class="highlight"><pre lang="">imagesBucket.putFile('example.jpg', __dirname + '/assert/example.jpg', function(err, reply) {
+  if (err) {
+    return console.error(err);
+  }
+
+  console.dir(reply);
+});
+</pre></div>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Bucket.prototype.putFile()</td> 
+      <td></td>
+      <td>putFile</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>key(String)</td>
+      <td colspan="2">key</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>pathname(String)</td>
+      <td colspan="2">file pathname</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>options(Object)</td>
+      <td colspan="2">upload option</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>callback(Function)</td>
+      <td colspan="2">Callback</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Promise</td>
+      <td colspan="2">Promise object</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Bucket.prototype.putFile = function(key, pathname, options, callback) {
+  // token
+  var deferred = Q.defer();
+
+  switch (arguments.length) {
+    case 3:
+      if (_.isFunction(options)) {
+        callback = options;
+        options = {};
+      }
+      break;
+    case 2:
+      options = {};
+      callback = noop;
+      break;
+  }
+
+  var config = _.extend(_.clone(this.config), options);
+
+  var putToken = (new token.PutPolicy(config)).token();
+
+  // safe pathname
+  pathname = path.resolve(process.cwd(), pathname);
+
+  // upload API
+  var uploadUrl = url.format({
+    protocol: 'http',
+    hostname: globalConfig.uploadUrl
+  });
+
+  // uploading
+  var req = request.post(uploadUrl, function(err, res, body) {
+    var result = JSON.parse(body);
+
+    if (err) {
+      deferred.reject(err);
+      return callback(err, result);
+    }
+
+    deferred.resolve(result);
+    callback(null, result);
+  });
+
+  // form data
+  var form = req.form();
+
+  form.append('token', putToken);
+  form.append('key', key);
+  form.append('file', fs.createReadStream(pathname));
+
+  return deferred.promise;
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_createPutStream">
+    createPutStream
+  </h3>
+  
+
+  <p>create a uploading stream</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Bucket.prototype.createPutStream()</td> 
+      <td></td>
+      <td>createPutStream</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>key(String)</td>
+      <td colspan="2">key</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>options(Object)</td>
+      <td colspan="2">upload option</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Stream</td>
+      <td colspan="2">uploading stream</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Bucket.prototype.createPutStream = function(key, options) {
+
+  options = options || {};
+
+  var config = _.extend(_.clone(this.config), options);
+
+  // token
+  var putToken = (new token.PutPolicy(config)).token();
+
+  var stream = new dataStream();
+
+  // upload API
+  var uploadUrl = url.format({
+    protocol: 'http',
+    hostname: globalConfig.uploadUrl
+  });
+
+  // uploading
+  var req = request.post(uploadUrl, function(err, res, body) {
+    var result = JSON.parse(body);
+
+    if (err) {
+      return stream.emit('error', err);
+    }
+
+    stream.emit('end', result);
+    stream.emit('complete', result);
+  });
+
+  // form data
+  var form = req.form();
+
+  form.append('token', putToken);
+  form.append('key', key);
+  form.append('file', stream);
+
+  return stream;
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_getFile">
+    getFile
+  </h3>
+  
+
+  <p>Get a key</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Bucket.prototype.getFile()</td> 
+      <td></td>
+      <td>getFile</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>key(String)</td>
+      <td colspan="2">key</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>callback(Function)</td>
+      <td colspan="2">Callback</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Promise</td>
+      <td colspan="2">Promise Object</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Bucket.prototype.getFile = function(key, callback) {
+  // token
+  var getToken = (new token.GetPolicy(this.config)).token(this.name, key);
+  var deferred = Q.defer();
+  callback = callback || noop;
+
+  // key url
+  var _url = url.format({
+    protocol: 'http',
+    hostname: util.format('%s.qiniudn.com', this.name),
+    pathname: '/' + key,
+    query: {
+      e: 3600,
+      token: getToken
+    }
+  });
+
+  var res = request(_url);
+  var recive = new dataStream();
+  res.pipe(recive)
+    .on('error', deferred.reject.bind(deferred))
+    .on('complete', function() {
+      var data = this.body();
+
+      deferred.resolve(data);
+      callback(null, data);
+    });
+
+  return deferred.promise;
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_createGetStream">
+    createGetStream
+  </h3>
+  
+
+  <p>create a getting stream</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Bucket.prototype.createGetStream()</td> 
+      <td></td>
+      <td>createGetStream</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>key(String)</td>
+      <td colspan="2">key</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Stream</td>
+      <td colspan="2">getting stream</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Bucket.prototype.createGetStream = function(key) {
+  // token
+  var getToken = (new token.GetPolicy(this.config)).token(this.name, key);
+
+  // key url
+  var _url = url.format({
+    protocol: 'http',
+    hostname: util.format('%s.qiniudn.com', this.name),
+    pathname: '/' + key,
+    query: {
+      e: 3600,
+      token: getToken
+    }
+  });
+
+  var res = request(_url);
+
+  return res;
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_key">
+    key
+  </h3>
+  
+
+  <p>return a asset object</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Bucket.prototype.key()</td> 
+      <td></td>
+      <td>key</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>key(String)</td>
+      <td colspan="2">key</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Asset</td>
+      <td colspan="2">asset object</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Bucket.prototype.key = function(key) {
+  return new Asset(key, this);
+};
+Bucket.Asset = Asset;
+
+Bucket.prototype.image = function(key) {
+  return new Image(key, this);
+};
+Bucket.Image = Image;
+
+module.exports = function(config) {
+  globalConfig = config;
+  token = require('./token')(globalConfig);
+  return Bucket;
+};
+
+function noop() {
+  return false;
+}</code></pre></td>
+    </tr>
+  
+  </table>
+  
+</section>
+      
+        <section id="api_config" class="api">
+  <h2>config: API索引</h2>
+  <ul class="indexs">
+  
+    <li>
+      <a href="#module_exports">exports</a>
+    </li>
+
+  </ul>
+  <hr />
+
+  
+  <h3 id="module_exports">
+    exports
+  </h3>
+  
+
+  
+
+  <table class="table">
+  
+    <tr>
+      <td>属性</td>
+      <td>module.exports</td> 
+      <td>module</td>
+      <td>exports</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>module.exports = {
+  uploadUrl : 'up.qiniu.com',
+  rsUrl     : 'rs.qbox.me',
+  rsfUrl    : 'rsf.qbox.me'
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+</section>
+      
+        <section id="api_fop" class="api">
+  <h2>fop: API索引</h2>
+  <ul class="indexs">
+  
+    <li>
+      <a href="#_Fop">Fop</a>
+    </li>
+
+    <li>
+      <a href="#_fop">fop</a>
+    </li>
+
+    <li>
+      <a href="#_imageInfo">imageInfo</a>
+    </li>
+
+    <li>
+      <a href="#_exif">exif</a>
+    </li>
+
+    <li>
+      <a href="#_imageView">imageView</a>
+    </li>
+
+    <li>
+      <a href="#_imageMogr">imageMogr</a>
+    </li>
+
+    <li>
+      <a href="#_watermark">watermark</a>
+    </li>
+
+    <li>
+      <a href="#_url">url</a>
+    </li>
+
+    <li>
+      <a href="#_exec">exec</a>
+    </li>
+
+    <li>
+      <a href="#_stream">stream</a>
+    </li>
+
+  </ul>
+  <hr />
+
+  
+  <h3 id="_Fop">
+    Fop
+  </h3>
+  
+
+  <p>Fop Class</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>函数</td>
+      <td>Fop()</td> 
+      <td></td>
+      <td>Fop</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>asset(Asset)</td>
+      <td colspan="2">asset</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>_config(Object)</td>
+      <td colspan="2">config</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>function Fop(asset, _config) {
+  this.parent = asset;
+  this.config = _.extend(_.clone(config), _config);
+
+  this.query = '';
+}</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_fop">
+    fop
+  </h3>
+  
+
+  <p>custom fop</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Fop.prototype.fop()</td> 
+      <td></td>
+      <td>fop</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>str(String)</td>
+      <td colspan="2">fop string</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Fop</td>
+      <td colspan="2">fop</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Fop.prototype.fop = function(str) {
+  this.query += '|' + str;
+
+  return this;
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_imageInfo">
+    imageInfo
+  </h3>
+  
+
+  <p>Add imageInfo to the fop</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Fop.prototype.imageInfo()</td> 
+      <td></td>
+      <td>imageInfo</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Fop</td>
+      <td colspan="2">fop</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Fop.prototype.imageInfo = function() {
+  this.query += '|imageInfo';
+
+  return this;
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_exif">
+    exif
+  </h3>
+  
+
+  <p>Add exif to the fop</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Fop.prototype.exif()</td> 
+      <td></td>
+      <td>exif</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Fop</td>
+      <td colspan="2">fop</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Fop.prototype.exif = function() {
+  this.query += '|exif';
+
+  return this;
+};
+
+
+var imageViewTranslations = {
+  weight: 'w',
+  height: 'h',
+  quality: 'q'
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_imageView">
+    imageView
+  </h3>
+  
+
+  <p>Add imageView to the fop</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Fop.prototype.imageView()</td> 
+      <td></td>
+      <td>imageView</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>opts(Object)</td>
+      <td colspan="2">options</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Fop</td>
+      <td colspan="2">fop</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Fop.prototype.imageView = function(opts) {
+  var mode = opts.mode;
+  delete opts.mode;
+
+  var _url = this.url();
+  var params = {};
+
+  _.each(opts, function(value, key) {
+    if (imageViewTranslations.hasOwnProperty(key)) {
+      key = imageViewTranslations[key];
+    }
+
+    params[key] = value;
+  });
+
+  this.query += util.format('|imageView/%d%s', mode, genOptUrl(params));
+
+  return this;
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_imageMogr">
+    imageMogr
+  </h3>
+  
+
+  <p>Add imageMogr to the fop</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Fop.prototype.imageMogr()</td> 
+      <td></td>
+      <td>imageMogr</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>opts(Object)</td>
+      <td colspan="2">options</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Fop</td>
+      <td colspan="2">fop</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Fop.prototype.imageMogr = function(opts) {
+  var params = {};
+
+  _.extend(params, opts);
+  
+  this.query += util.format('|imageMogr/v2/auto-orient%s', genOptUrl(params));
+
+  return this;
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_watermark">
+    watermark
+  </h3>
+  
+
+  <p>Add watermark to the fop</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Fop.prototype.watermark()</td> 
+      <td></td>
+      <td>watermark</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>opts(Object)</td>
+      <td colspan="2">options</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Fop</td>
+      <td colspan="2">fop</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Fop.prototype.watermark = function(opts) {
+  var params = {};
+  var mode = opts.mode;
+  delete opts.mode;
+
+  _.extend(params, opts);
+
+  params.image = utils.safeEncode(params.image);
+
+  this.query += util.format('|watermark/%d%s', mode, genOptUrl(params));
+
+  return this;
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_url">
+    url
+  </h3>
+  
+
+  <p>get the url of the fop</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Fop.prototype.url()</td> 
+      <td></td>
+      <td>url</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>String</td>
+      <td colspan="2">url</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Fop.prototype.url = function() {
+  return util.format('%s?%s', this.parent.url(), this.query.substr(1));
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_exec">
+    exec
+  </h3>
+  
+
+  <p>execute the fop</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Fop.prototype.exec()</td> 
+      <td></td>
+      <td>exec</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>callback(Function)</td>
+      <td colspan="2">Callback</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Promise</td>
+      <td colspan="2">promise object</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Fop.prototype.exec = function(callback) {
+  var deferred = Q.defer();
+  callback = callback || noop;
+
+  var recive = new dataStream();
+  request(this.url())
+    .pipe(recive)
+    .on('error', function(err) {
+      deferred.reject(err);
+      callback(err);
+    })
+    .on('complete', function() {
+      var data = this.body();
+
+      deferred.resolve(data);
+      callback(null, data);
+    });
+
+  return deferred.promise;
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_stream">
+    stream
+  </h3>
+  
+
+  <p>return a stream of the fop</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Fop.prototype.stream()</td> 
+      <td></td>
+      <td>stream</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Stream</td>
+      <td colspan="2">stream</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Fop.prototype.stream = function() {
+  var recive = new dataStream();
+  request(this.url()).pipe(recive);
+
+  return recive;
+};
+
+module.exports = Fop;
+
+function genOptUrl(params) {
+  var _url = &quot;&quot;;
+
+  _.each(params, function(value, key) {
+    _url += util.format('/%s/%s', key, value);
+  });
+
+  return _url;
+}
+
+function noop() {
+  return false;
+}</code></pre></td>
+    </tr>
+  
+  </table>
+  
+</section>
+      
+        <section id="api_image" class="api">
+  <h2>image: API索引</h2>
+  <ul class="indexs">
+  
+    <li>
+      <a href="#_Image">Image</a>
+    </li>
+
+    <li>
+      <a href="#_imageInfo">imageInfo</a>
+    </li>
+
+    <li>
+      <a href="#_exif">exif</a>
+    </li>
+
+    <li>
+      <a href="#_imageView">imageView</a>
+    </li>
+
+    <li>
+      <a href="#promise_stream">stream</a>
+    </li>
+
+    <li>
+      <a href="#_imageMogr">imageMogr</a>
+    </li>
+
+    <li>
+      <a href="#promise_stream">stream</a>
+    </li>
+
+    <li>
+      <a href="#_watermark">watermark</a>
+    </li>
+
+    <li>
+      <a href="#promise_stream">stream</a>
+    </li>
+
+  </ul>
+  <hr />
+
+  
+  <h3 id="_Image">
+    Image
+  </h3>
+  
+
+  <p>Image Asset</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>函数</td>
+      <td>Image()</td> 
+      <td></td>
+      <td>Image</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>key(String)</td>
+      <td colspan="2">key</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>parent(Bucket)</td>
+      <td colspan="2">bucket object</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>function Image(key, parent, _config) {
+  var config = _.extend(_.clone(parent.config), {
+    separate: '-'
+  }, _config);
+
+  this.key = key;
+  this.parent = parent;
+  this.config = config;
+}
+util.inherits(Image, Asset);</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_imageInfo">
+    imageInfo
+  </h3>
+  
+
+  <p>get the image's infomations</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Image.prototype.imageInfo()</td> 
+      <td></td>
+      <td>imageInfo</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>callback(Function)</td>
+      <td colspan="2">Callback</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Promise</td>
+      <td colspan="2">promise object</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Image.prototype.imageInfo = function(callback) {
+  var deferred = Q.defer();
+  callback = callback || noop;
+
+  var infoUrl = this.url() + '?imageInfo';
+
+  request(infoUrl, function(err, res, body) {
+    if (err) {
+      deferred.reject(err);
+      return callback(err);
+    }
+
+    var info = JSON.parse(body);
+
+    deferred.resolve(info);
+    callback(null, info);
+  });
+
+  return deferred.promise;
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_exif">
+    exif
+  </h3>
+  
+
+  <p>get the exif infomation of the picture</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Image.prototype.exif()</td> 
+      <td></td>
+      <td>exif</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>callback(Function)</td>
+      <td colspan="2">Callback</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Promise</td>
+      <td colspan="2">promise object</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Image.prototype.exif = function(callback) {
+  var deferred = Q.defer();
+  callback = callback || noop;
+
+  var infoUrl = this.url() + '?exif';
+
+  request(infoUrl, function(err, res, body) {
+    if (err) {
+      deferred.reject(err);
+      return callback(err);
+    }
+
+    var info = JSON.parse(body);
+
+    deferred.resolve(info);
+    callback(null, info);
+  });
+
+  return deferred.promise;
+};
+
+var imageViewTranslations = {
+  weight: 'w',
+  height: 'h',
+  quality: 'q'
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_imageView">
+    imageView
+  </h3>
+  
+
+  <p>return a thumbnail image</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Image.prototype.imageView()</td> 
+      <td></td>
+      <td>imageView</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>opts(Object)</td>
+      <td colspan="2">options</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>callback(Function)</td>
+      <td colspan="2">Callback</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Promise</td>
+      <td colspan="2">promise object</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Image.prototype.imageView = function(opts, callback) {
+  var deferred = Q.defer();
+  callback = callback || noop;
+
+  var mode = opts.mode;
+  delete opts.mode;
+
+  var _url = this.url();
+  var params = {};
+
+  _.each(opts, function(value, key) {
+    if (imageViewTranslations.hasOwnProperty(key)) {
+      key = imageViewTranslations[key];
+    }
+
+    params[key] = value;
+  });
+
+  _url += util.format('?imageView/%d%s', mode, genOptUrl(params));
+
+  var recive = new dataStream();
+  request(_url).pipe(recive)
+    .on('complete', function() {
+      var data = this.body();
+
+      deferred.resolve(data);
+      callback(null, data);
+    })
+    .on('error', function(err) {
+      deferred.reject(err);
+      callback(err);
+    });
+
+
+  var promise = deferred.promise;</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="promise_stream">
+    stream
+  </h3>
+  
+
+  <p>return the image stream</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>promise.stream()</td> 
+      <td>promise</td>
+      <td>stream</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Stream</td>
+      <td colspan="2">stream</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>promise.stream = function() {
+    return recive;
+  };
+
+  return promise;
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_imageMogr">
+    imageMogr
+  </h3>
+  
+
+  <p>return a processed image</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Image.prototype.imageMogr()</td> 
+      <td></td>
+      <td>imageMogr</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>opts(Object)</td>
+      <td colspan="2">options</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>callback(Function)</td>
+      <td colspan="2">Callback</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Promise</td>
+      <td colspan="2">promise object</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Image.prototype.imageMogr = function(opts, callback) {
+  var deferred = Q.defer();
+  callback = callback || noop;
+
+  var _url = this.url();
+  var params = {};
+
+  _.extend(params, opts);
+  
+  _url += util.format('?imageMogr/v2/auto-orient%s', genOptUrl(params));
+
+  var recive = new dataStream();
+  request(_url).pipe(recive)
+    .on('complete', function() {
+      var data = this.body();
+
+      deferred.resolve(data);
+      callback(null, data);
+    })
+    .on('error', function(err) {
+      deferred.reject(err);
+      callback(err);
+    });
+
+  var promise = deferred.promise;</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="promise_stream">
+    stream
+  </h3>
+  
+
+  <p>return the image stream</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>promise.stream()</td> 
+      <td>promise</td>
+      <td>stream</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Stream</td>
+      <td colspan="2">stream</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>promise.stream = function() {
+    return recive;
+  };
+
+  return promise;
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_watermark">
+    watermark
+  </h3>
+  
+
+  <p>return a image with a watermark</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>Image.prototype.watermark()</td> 
+      <td></td>
+      <td>watermark</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>opts(Object)</td>
+      <td colspan="2">options</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>callback(Function)</td>
+      <td colspan="2">Callback</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Promise</td>
+      <td colspan="2">promise object</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>Image.prototype.watermark = function(opts, callback) {
+  var deferred = Q.defer();
+  callback = callback || noop;
+
+  var _url = this.url();
+  var params = {};
+  var mode = opts.mode;
+  delete opts.mode;
+
+  _.extend(params, opts);
+
+  params.image = utils.safeEncode(params.image);
+
+  _url += util.format('?watermark/%d%s', mode, genOptUrl(params));
+
+  var recive = new dataStream();
+  request(_url).pipe(recive)
+    .on('complete', function() {
+      var data = this.body();
+
+      deferred.resolve(data);
+      callback(null, data);
+    })
+    .on('error', function(err) {
+      deferred.reject(err);
+      callback(err);
+    });
+
+  var promise = deferred.promise;</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="promise_stream">
+    stream
+  </h3>
+  
+
+  <p>return the image stream</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>promise.stream()</td> 
+      <td>promise</td>
+      <td>stream</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Stream</td>
+      <td colspan="2">stream</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>promise.stream = function() {
+    return recive;
+  };
+
+  return promise;
+};
+
+module.exports = Image;
+
+function genOptUrl(params) {
+  var _url = &quot;&quot;;
+
+  _.each(params, function(value, key) {
+    _url += util.format('/%s/%s', key, value);
+  });
+
+  return _url;
+}
+
+function noop() {
+  return false;
+}</code></pre></td>
+    </tr>
+  
+  </table>
+  
+</section>
+      
+        <section id="api_qiniu" class="api">
+  <h2>qiniu: API索引</h2>
+  <ul class="indexs">
+  
+    <li>
+      <a href="#qiniu_config">config</a>
+    </li>
+
+    <li>
+      <a href="#qiniu_set">set</a>
+    </li>
+
+    <li>
+      <a href="#qiniu_get">get</a>
+    </li>
+
+  </ul>
+  <hr />
+
+  
+  <h3 id="qiniu_config">
+    config
+  </h3>
+  
+
+  <p>Global Config<br />Example:</p>
+
+<div class="highlight"><pre lang="">qiniu.config({
+  access_key: '-----',
+  secret_key: '-----',
+
+  // global token option
+  callbackUrl: '<a href='http://images.example.com/upload/callback'>http://images.example.com/upload/callback</a>',
+  callbackBody: '{                   \
+    "foo"   : "bar",                 \
+    "name"  : $(fname),              \
+    "size"  : $(fsize),              \
+    "type"  : $(mimeType),           \
+    "hash"  : $(etag),               \
+    "w"     : $(imageInfo.width),    \
+    "h"     : $(imageInfo.height),   \
+    "color" : $(exif.ColorSpace.val) \
+  }'
+});
+
+qiniu.config('foo', 'bar');
+qiniu.config('foo');
+</pre></div> 
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>qiniu.config()</td> 
+      <td>qiniu</td>
+      <td>config</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>key(String,Object)</td>
+      <td colspan="2">key of config</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>value(Mix)</td>
+      <td colspan="2">value</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>qiniu.config = function(key, value) {
+  if (arguments.length &gt; 1 &amp;&amp; _.isString(key)) {
+    // set config data normally
+    qiniu.set(key, value);
+  } else {
+    switch (true) {
+      case _.isString(key):
+        // Get config data
+        return qiniu.get(key);
+        break;
+      case _.isObject(key):
+        // Set config data with a object
+        _.each(key, function(_value, _key) {
+          qiniu.set(_key, _value);
+        });
+        break;
+    }
+  }
+
+  return this;
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="qiniu_set">
+    set
+  </h3>
+  
+
+  <p>Set config data</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>qiniu.set()</td> 
+      <td>qiniu</td>
+      <td>set</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>key(String)</td>
+      <td colspan="2">key</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>value(Mix)</td>
+      <td colspan="2">value</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Object</td>
+      <td colspan="2">qiniu object</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>qiniu.set = function(key, value) {
+  _configData[key] = value;
+
+  return this;
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="qiniu_get">
+    get
+  </h3>
+  
+
+  <p>Get config data</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>qiniu.get()</td> 
+      <td>qiniu</td>
+      <td>get</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>key(String)</td>
+      <td colspan="2">key</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>Mix</td>
+      <td colspan="2">config value</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>qiniu.get = function(key) {
+  return _configData[key];
+};
+
+qiniu.bucket = function(bucket) {
+  return new Bucket(bucket);
+};
+
+qiniu.batch = function(config) {
+  return new qiniu.Batch(config);
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+</section>
+      
+        <section id="api_token" class="api">
+  <h2>token: API索引</h2>
+  <ul class="indexs">
+  
+    <li>
+      <a href="#__">_</a>
+    </li>
+
+    <li>
+      <a href="#_PutPolicy">PutPolicy</a>
+    </li>
+
+    <li>
+      <a href="#_token">token</a>
+    </li>
+
+  </ul>
+  <hr />
+
+  
+  <h3 id="__">
+    _
+  </h3>
+  
+
+  <p>Qiniu Token generic</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>声明</td>
+      <td>_</td> 
+      <td></td>
+      <td>_</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>var _     = require('underscore');
+var util  = require('util');
+var url   = require('url');
+var qs    = require('querystring');
+var utils = require('./utils');
+
+var globalConfig = null;</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_PutPolicy">
+    PutPolicy
+  </h3>
+  
+
+  <p>Put Policy</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>函数</td>
+      <td>PutPolicy()</td> 
+      <td></td>
+      <td>PutPolicy</td>
+    </tr>
+  
+
+    <tr>
+      <td>参数</td>
+      <td>opts(Object)</td>
+      <td colspan="2">options</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>function PutPolicy(opts) {
+  var now = Math.floor(Date.now() / 1000);
+
+  this.scope        = opts.scope        || null;
+  this.deadline     = now + opts.deadline || now + 3600;
+  this.endUser      = opts.endUser      || null;
+  this.returnUrl    = opts.returnUrl    || null;
+  this.returnBody   = opts.returnBody   || null;
+  this.callbackUrl  = opts.callbackUrl  || null;
+  this.callbackBody = opts.callbackBody || null;
+  this.asyncOps     = opts.asyncOps     || null;
+}</code></pre></td>
+    </tr>
+  
+  </table>
+  
+  
+  <h3 id="_token">
+    token
+  </h3>
+  
+
+  <p>Generate the token</p>
+
+  <table class="table">
+  
+    <tr>
+      <td>方法</td>
+      <td>PutPolicy.prototype.token()</td> 
+      <td></td>
+      <td>token</td>
+    </tr>
+  
+
+    <tr>
+      <td>返回</td>
+      <td>String</td>
+      <td colspan="2">token</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>PutPolicy.prototype.token = function() {
+  var params = {};
+
+  _.each(this, function(value, key) {
+    if (!_.isNull(value)) {
+      params[key] = value;
+    }
+  });
+  return generateToken(params);
+};
+
+function generateToken(params) {
+  // signature
+  var signature = utils.safeEncode(JSON.stringify(params));
+
+  // EncodedDigest
+  var encodedDigest = utils.encodeSign(signature, globalConfig.secret_key);
+
+  return util.format('%s:%s:%s', globalConfig.access_key, encodedDigest, signature)
+}
+
+function GetPolicy(opts) {
+  var now = Math.floor(Date.now() / 1000);
+
+  this.deadline = now + opts.deadline || now + 3600;
+}
+
+GetPolicy.prototype.token = function(domain, key, opts) {
+  opts = opts || {};
+  var fop = opts.fop || 'e';
+
+  if (_.isUndefined(key)) {
+    // base url
+    var encodedDigest = utils.encodeSign(domain, globalConfig.secret_key);
+  } else {
+    // safe domain
+    var hostname = url.parse(domain).hostname;
+
+    var base = url.format({
+      hostname: hostname,
+      pathname: '/' + key
+    });
+
+    base += '?' + fop;
+    base += '&amp;' + qs.stringify({
+      e: this.deadline
+    });
+
+    var encodedDigest = utils.encodeSign(base, globalConfig.secret_key);
+  }
+
+  return util.format('%s:%s', globalConfig.access_key, encodedDigest);
+};
+
+function AccessToken() {}
+
+AccessToken.prototype.token = function(path, body) {
+  body = body || '';
+
+  var data = util.format('%s\n%s', path, body);
+
+  var encodeSignData = utils.encodeSign(data, globalConfig.secret_key);
+
+  return util.format('QBox %s:%s', globalConfig.access_key, encodeSignData);
+};
+module.exports = function(config) {
+  globalConfig = config;
+  return {
+    PutPolicy: PutPolicy,
+    GetPolicy: GetPolicy,
+    AccessToken: AccessToken
+  };
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+</section>
+      
+        <section id="api_utils" class="api">
+  <h2>utils: API索引</h2>
+  <ul class="indexs">
+  
+    <li>
+      <a href="#_crypto">crypto</a>
+    </li>
+
+  </ul>
+  <hr />
+
+  
+  <h3 id="_crypto">
+    crypto
+  </h3>
+  
+
+  
+
+  <table class="table">
+  
+    <tr>
+      <td>声明</td>
+      <td>crypto</td> 
+      <td></td>
+      <td>crypto</td>
+    </tr>
+  
+
+  
+    <tr>
+      <td>代码</td><td colspan="3"><pre><code>var crypto = require('crypto');
+var fs = require('fs');
+
+var utils = exports;
+
+utils.safeEncode = function(str) {
+  var encoded = new Buffer(str).toString('base64');
+  var rtn = encoded.replace(/\//g, '_').replace(/\+/g, '-');
+
+  return rtn;
+};
+
+utils.encodeSign = function(str, key) {
+  return utils.safeEncode(
+    crypto
+      .createHmac('sha1', key)
+      .update(str)
+      .digest()
+  );
+};</code></pre></td>
+    </tr>
+  
+  </table>
+  
+</section>
+      
+    </div>
+  </div>
+</div>
+      <footer class="footer">
+        <div class="container">
+          <p class="pull-right">
+            <a href="#">Back to top</a>
+          </p>
+          <p>此文档通过doxmate生成。主题借鉴Bootstrap API文档风格，注解基于<a href="https://github.com/visionmedia/dox">Dox</a>。欢迎关注doxmate作者<a href="http://weibo.com/shyvo" target="_blank">@朴灵</a></p>
+          <ul class="footer-links">
+            <li><a href="https://github.com/visionmedia/dox">Dox主页</a></li>
+            <li><a href="http://html5ify.com/doxmate">Doxmate主页</a></li>
+            <li><a href="https://github.com/JacksonTian/doxmate/issues?state=open">提交bug</a></li>
+          </ul>
+      </div>
+    </footer>
+    <script>
+      $(function() {
+        $('pre').addClass('prettyprint');
+        $('td pre').removeClass('prettyprint');
+        prettyPrint();
+        var $window = $(window);
+        $('.bs-docs-sidenav').affix({
+          offset: {
+            top: function () {
+              return $window.width() <= 980 ? 290 : 210
+            },
+            bottom: 270
+          }
+        });
+        $(".content").find('h1, h2, h3, h4, h5, h6').each(function () {
+          var node = $(this);
+          if (!node.attr("id")) {
+            node.attr("id", "index_" + node.text());
+          }
+          node.css("paddingTop", 40);
+        });
+      });
+    </script>
+  
+  </body>
+</html>

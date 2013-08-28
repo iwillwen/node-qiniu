@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>node-qiniu Documentation</title>
+    <meta name="keywords" content="cloud,storage,s3,qiniu,web-service" />
+    <meta name="description" content="Qiniu Resource Storage SDK for Node.js" />
+    <script src="assets/prettify.js"></script>
+    <script src="assets/jquery-1.8.2.min.js"></script>
+    <script src="bootstrap/js/bootstrap.js"></script>
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/base.css" />
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="./index.html">node-qiniu</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+            
+              <li>
+                <a href="./api.html">API Docs</a>
+              </li>
+            
+            
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <header class="jumbotron subhead">
+      <div class="container">
+        <h1>node-qiniu <small>Version: 6.1.0 By @iwillwen</small></h1>
+        <p class="lead">
+          Qiniu Resource Storage SDK for Node.js
+        </p>
+      </div>
+    </header>
+<div class="container content">
+  <div class="row">
+  	<div class="span3 bs-docs-sidebar">
+      <ul class="nav nav-list bs-docs-sidenav affix">
+
+  <li class="level_2">
+    <a href="#index_安装" title="安装">
+      <i class="icon-chevron-right"></i>安装
+    </a>
+  </li>
+
+  <li class="level_2">
+    <a href="#index_测试" title="测试">
+      <i class="icon-chevron-right"></i>测试
+    </a>
+  </li>
+
+  <li class="level_2">
+    <a href="#index_使用" title="使用">
+      <i class="icon-chevron-right"></i>使用
+    </a>
+  </li>
+
+  <li class="level_2">
+    <a href="#index_模块结构" title="模块结构">
+      <i class="icon-chevron-right"></i>模块结构
+    </a>
+  </li>
+
+  <li class="level_2">
+    <a href="#index_License " title="License ">
+      <i class="icon-chevron-right"></i>License 
+    </a>
+  </li>
+
+</ul>
+
+    </div>
+    <div class="span9">
+      <section>
+        <h1>七牛 Node.js SDK</h1>
+<p>该 SDK 适用于 Node.js 0.4.7 及其以上版本，基于 七牛云存储官方API 构建。 若您的服务端是一个基于 Node.js 编写的网络程序，使用此 SDK ， 能让您以非常便捷地方式将数据安全地存储到七牛云存储上。 以便让您应用的终端用户进行高速上传和下载，同时也使得您的服务端更加轻盈。</p>
+<h2>安装</h2>
+<p>你可以从 npm 进行安装</p>
+<pre><code class="lang-shell">npm install node-qiniu</code></pre>
+<p>也可以从 Github 进行下载安装</p>
+<pre><code class="lang-shell">$ git clone git://github.com/qiniu/node-qiniu
+$ cd node-qiniu
+$ npm install .</code></pre>
+<h2>测试</h2>
+<p>七牛 Node.js SDK 使用 Mocha 进行单元测试。</p>
+<pre><code class="lang-shell">$ npm install -g mocha
+$ make test</code></pre>
+<h2>使用</h2>
+<h3>配置 <code>qiniu.config()</code></h3>
+<p>设置全局参数，包括必须的 AccessKey 和 SecretKey，还可以设置其他如 CallbackURL 等参数，将会顺延至所有空间。</p>
+<pre><code class="lang-js">qiniu.config({
+  access_key: &#39;------&#39;,
+  secret_key: &#39;------&#39;
+});</code></pre>
+<h3>Bucket</h3>
+<p>获得空间对象并进行操作。</p>
+<pre><code class="lang-js">var imagesBucket = qiniu.bucket(&#39;qiniu-sdk-test&#39;);
+// 也可以这样操作
+// var imagesBucket = new qiniu.Bucket(&#39;qiniu-sdk-test&#39;);</code></pre>
+<h4>上传文件</h4>
+<p><strong>1. <code>Bucket.putFile()</code></strong></p>
+<p>上传一个文件，参数为将要上传的 Key，文件地址(可以是绝对地址，也可以是相对地址)，第三个为可选参数 options，即本次上传中所使用 PutToken 的特殊设置，第四个为可选参数回调(callback)，若不传入回调函数，将由 putFile 函数所返回的 Promise 对象进行响应。</p>
+<pre><code class="lang-js">// 普通上传
+imagesBucket.putFile(&#39;exampleKey&#39;, __dirname + &#39;/assets/example.jpg&#39;, function(err, reply) {
+  if (err) {
+    return console.error(err);
+  }
+
+  console.dir(reply);
+});
+// 特殊参数
+imagesBucket.putFile(&#39;exampleKey_1&#39;, __dirname + &#39;/assets/example.jpg&#39;, {
+  // 为本次上传中所使用的 Token 进行设置，此处为设置上传者标识
+  endUser: &#39;foobar&#39;
+}, function(err, reply) {
+  if (err) {
+    return console.error(err);
+  }
+
+  console.dir(reply);
+});
+// 七牛 Node.js SDK 所提供的 Promise 对象遵循 Promise/A(+) 标准，使用 .then 方法进行响应
+imagesBucket.putFile(&#39;exampleKey_2&#39;, __dirname + &#39;/assets/example.jpg&#39;)
+  .then(
+    function(reply) {
+      // 上传成功
+      console.dir(reply);
+    },
+    function(err) {
+      // 上传失败
+      console.error(err);
+    }
+  );</code></pre>
+<p><strong>2. <code>Bucket.createPutStream()</code></strong></p>
+<p>七牛 Node.js SDK 提供基于流(Stream)的操作方式，为熟悉 Node.js 流式操作的开发者提供方便快捷的高性能 API。</p>
+<pre><code class="lang-js">var puttingStream = imagesBucket.createPutStream(&#39;exampleKey_3&#39;);
+var readingStream = fs.createReadStream(__dirname + &#39;/assets/example.jpg&#39;);
+
+readingStream.pipe(puttingStream)
+  .on(&#39;error&#39;, function(err) {
+    console.error(err);
+  })
+  .on(&#39;end&#39;, function(reply) {
+    console.dir(reply);
+  });</code></pre>
+<h4>下载文件</h4>
+<p><code>Bucket.getFile()</code>和<code>Bucket.createGetStream()</code></p>
+<p>获取文件与上传文件同样简单，和 Node.js 中原生的文件系统(File System)的 API 有相似之处。</p>
+<pre><code class="lang-js">imagesBucket.getFile(&#39;exampleKey&#39;, function(err, data) {
+  if (err) {
+    return console.error(err);
+  }
+
+  // data 为包含文件数据的 Buffer 对象
+});</code></pre>
+<p>同样的，获取文件也可以使用流式操作进行</p>
+<pre><code class="lang-js">var gettingStream = imagesBucket.createGetStream(&#39;exampleKey&#39;);
+var writingStream = fs.createWriteStream(__dirname + &#39;/assets/example_tmp.jpg&#39;);
+
+gettingStream.pipe(writingStream)
+  .on(&#39;error&#39;, function(err) {
+    console.error(err);
+  })
+  .on(&#39;finish&#39;, function() {
+    // 文件数据已写入本地文件系统
+  });</code></pre>
+<h3><code>Image</code> 图片操作</h3>
+<p>七牛 Node.js SDK 提供<code>Image</code>类，用于对图片资源进行操作。</p>
+<p>使用 Bucket.image() 方法获取一个图像对象</p>
+<pre><code class="lang-js">var image = imagesBucket.image(&#39;exampleKey&#39;);</code></pre>
+<h4><code>Image.imageInfo()</code></h4>
+<p>Image.imageInfo 方法可以用于获取图片资源的图片信息。
+详细请看：<a href="http://docs.qiniu.com/api/v6/image-process.html#imageInfo"><a href="http://docs.qiniu.com/api/v6/image-process.html#imageInfo">http://docs.qiniu.com/api/v6/image-process.html#imageInfo</a></a></p>
+<pre><code class="lang-js">image.imageInfo(function(err, info) {
+  if (err) {
+    return console.error(err);
+  }
+
+  console.dir(info);
+});</code></pre>
+<h4><code>Image.exif()</code></h4>
+<p>Image.imageView 方法用于生成指定规格的缩略图。
+详细请看：<a href="http://docs.qiniu.com/api/v6/image-process.html#imageView"><a href="http://docs.qiniu.com/api/v6/image-process.html#imageView">http://docs.qiniu.com/api/v6/image-process.html#imageView</a></a></p>
+<pre><code class="lang-js">image.exif(function(err, exif) {
+  if (err) {
+    return console.error(err);
+  }
+
+  console.dir(exif);
+});</code></pre>
+<h4><code>Image.imageView()</code></h4>
+<p>Image.imageView 方法用于生成指定规格的缩略图。
+详细请看：<a href="http://docs.qiniu.com/api/v6/image-process.html#imageView"><a href="http://docs.qiniu.com/api/v6/image-process.html#imageView">http://docs.qiniu.com/api/v6/image-process.html#imageView</a></a></p>
+<pre><code class="lang-js">image.imageView({
+  mode    : 2,
+  width   : 180,
+  height  : 180,
+  quality : 85,
+  format  : &#39;jpg&#39;
+}, function(err, imageData) {
+  if (err) {
+    return console.error(err);
+  }
+
+  // imageData 为处理过后的图像数据
+});</code></pre>
+<p>其中，图片对象中的所有含图片数据返回的方法可以使用流式操作。不传入第二个的 callback 参数，而在调用方法的括弧后再调用<code>.stream()</code>方法，则会返回一个会不断输出数据的 IO 流。</p>
+<pre><code class="lang-js">var imageViewStream = image.imageView({
+  mode    : 2,
+  width   : 180,
+  height  : 180,
+  quality : 85,
+  format  : &#39;jpg&#39;
+}).stream();
+var writingStream = fs.createWriteStream(__dirname + &#39;/assets/example_thumbnail.jpg&#39;);
+
+imageViewStream.pipe(writingStream)
+  .on(&#39;error&#39;, function(err) {
+    console.error(err);
+  })
+  .on(&#39;finish&#39;, function() {
+    // 缩略图已写入本地文件系统
+  });</code></pre>
+<p>诸如此类：</p>
+<pre><code class="lang-js">image.imageMogr(...).stream();
+image.watermark(...).stream();
+image.alias(...).stream();</code></pre>
+<h4><code>Image.imageMogr()</code></h4>
+<p>Image.imageMogr 方法用于调用高级图像处理接口，并返回处理后的图片数据。
+详细请看：<a href="http://docs.qiniu.com/api/v6/image-process.html#imageMogr"><a href="http://docs.qiniu.com/api/v6/image-process.html#imageMogr">http://docs.qiniu.com/api/v6/image-process.html#imageMogr</a></a></p>
+<pre><code class="lang-js">image.imageMogr({
+  thumbnail : &#39;300x500&#39;,
+  gravity   : &#39;NorthWest&#39;,
+  crop      : &#39;!300x400a10a10&#39;,
+  quality   : 85,
+  rotate    : 90,
+  format    : &#39;jpg&#39;
+}, function(err, imageData) {
+  if (err) {
+    return console.error(err);
+  }
+
+  // 使用 imageData 进行操作
+});</code></pre>
+<h4><code>Image.watermark()</code></h4>
+<p>Image.watermark 方法用于生成一个带有水印的图片，图片水印 API 支持图片水印和文字水印两种模式。
+详细请看：<a href="http://docs.qiniu.com/api/v6/image-process.html#watermark">http://docs.qiniu.com/api/v6/image-process.html#watermark</a></p>
+<pre><code class="lang-js">image.watermark({
+  mode: 1,
+  image: &#39;http://www.b1.qiniudn.com/images/logo-2.png&#39;,
+  dissolve: 70,
+  gravity: &#39;SouthEast&#39;,
+  dx: 20,
+  dy: 20
+}, function(err, imageData) {
+  if (err) {
+    return console.error(err);
+  }
+
+  // 使用 imageData 进行操作
+});</code></pre>
+<h4><code>Image.alias()</code></h4>
+<p>Image.alias 方法用于返回既定的数据处理格式的数据，使用此方法需要在<a href="https://portal.qiniu.com">七牛开发者平台</a>中对设置进行操作。
+其中，<code>Image.alias()</code>方法继承于 key 所用的<code>Asset</code>类。</p>
+<pre><code class="lang-js">image.alias(&#39;testalias&#39;, function(err, imageData) {
+  if (err) {
+    return console.error(err);
+  }
+
+  // 使用 imageData 进行操作
+});</code></pre>
+<h3><code>Asset</code> 资源操作</h3>
+<p>七牛 Node.js SDK 提供一个<code>Asset</code>类，用于对所属资源进行操作。</p>
+<p>获取 key 所对应资源对象</p>
+<pre><code class="lang-js">var picture = imagesBucket.key(&#39;exampleKey&#39;);</code></pre>
+<h4><code>Asset.url()</code></h4>
+<p><code>Asset.url()</code>方法可以获得该资源的 URL 地址以用于访问</p>
+<pre><code class="lang-js">var picUrl = picture.url();</code></pre>
+<h4><code>Asset.entryUrl()</code></h4>
+<p><code>Asset.entryUrl()</code>方法可以获得该资源用于 API 调用时所需的 EncodedEntryURL。
+但是在 Node.js SDK 中，大部分 API 都不需要开发者自行使用。:)</p>
+<pre><code class="lang-js">var encodedPicUrl = picture.entryUrl();</code></pre>
+<h4><code>Asset.stat()</code></h4>
+<p>Asset.stat 方法可以获得该资源的如文件大小、MIME 类型等 stat 数据。</p>
+<pre><code class="lang-js">picture.stat(function(err, stat) {
+  if (err) {
+    return console.error(err);
+  }
+
+  console.dir(stat);
+  /**
+   * {
+   *   hash     : &lt;FileEtag&gt;, // string 类型，文件的Hash值
+   *   fsize    : &lt;FileSize&gt;, // int 类型，文件的大小(单位: 字节)
+   *   mimeType : &lt;MimeType&gt;, // string 类型，文件的媒体类型，比如&quot;image/gif&quot;
+   *   putTime  : &lt;PutTime&gt;   // int64 类型，文件上传到七牛云的时间(Unix时间戳)
+   * }
+   */
+});</code></pre>
+<h4><code>Asset.move()</code></h4>
+<p><code>Asset.move()</code>方法用于移动该资源到指定的位置。
+第一个参数可以是来自其他 Bucket 所属的资源对象。</p>
+<pre><code class="lang-js">picture.move(imagesBucket.key(&#39;exampleKey_4&#39;), function(err) {
+  if (err) {
+    return console.error(err);
+  }
+
+  // 此处没有返回值，如果没有错误，则为操作成功，以下方法相同
+});</code></pre>
+<h4><code>Asset.copy()</code></h4>
+<p><code>Asset.copy()</code>方法用于为该资源创建一个拷贝，并保存到指定的资源位置。</p>
+<pre><code class="lang-js">imagesBucket.key(&#39;exampleKey_4&#39;).copy(picture, function(err) {
+  if (err) {
+    return console.error(err);
+  }
+});</code></pre>
+<h4><code>Asset.remove()</code></h4>
+<p><code>Asset.remove()</code>方法用于删除当前资源。</p>
+<pre><code class="lang-js">imagesBucket.key(&#39;exampleKey_4&#39;).remove(function(err) {
+  if (err) {
+    return console.error(err);
+  }
+});</code></pre>
+<h3><code>Batch</code> 资源批量操作</h3>
+<p>在支持对单个文件资源操作的同时，七牛云存储还支持批量地对多个文件进行查看、删除、复制和移动操作。
+详细请看：<a href="http://docs.qiniu.com/api/v6/rs.html#batch">http://docs.qiniu.com/api/v6/rs.html#batch</a></p>
+<p>生成一个批量操作的控制器</p>
+<pre><code class="lang-js">var batch = qiniu.batch();</code></pre>
+<p><code>Batch</code>中大部分参数与资源对象<code>Asset</code>类似，支持查看、移动、复制和删除操作。</p>
+<pre><code class="lang-js">batch
+  // 获取文件信息
+  .stat(imagesBucket.key(&#39;exampleKey&#39;))
+  // 移动资源
+  .move(imagesBucket.key(&#39;exampleKey&#39;), imagesBucket.key(&#39;exampleKey_5&#39;))
+  // 复制资源
+  .copy(imagesBucket.key(&#39;exampleKey_5&#39;), imagesBucket.key(&#39;exampleKey&#39;))
+  // 删除资源
+  .remove(imagesBucket.key(&#39;exampleKey_5&#39;))
+  // 执行操作
+  // 每一个操作都按照前后顺序进行执行
+  .exec(function(err, results) {
+    if (err) {
+      return console.error(err);
+    }
+
+    console.dir(results);
+    // results 为每一个操作的结果
+  });</code></pre>
+<h3><code>Fop</code> 管道操作</h3>
+<p>七牛云存储提供一个非常实用的资源处理 API，可以用于对资源进行多种处理的操作。</p>
+<p>例: 将一个原图缩略，然后在缩略图上打上另外一个图片作为水印</p>
+<p>使用<code>Asset.fop()</code>方法创建 Fop 管道操作器，并进行操作。</p>
+<pre><code class="lang-js">var image = imagesBucket.key(&#39;exampleKey&#39;);
+// Image.fop 方法继承于 Asset 类
+
+image.fop()
+  // 对图片进行缩略
+  .imageView({
+    mode   : 2,
+    height : 200
+  })
+  // 为图片打上水印
+  .watermark({
+    mode  : 1,
+    image : &#39;http://www.b1.qiniudn.com/images/logo-2.png&#39;
+  })
+  // 执行操作
+  .exec(function(err, imageData) {
+    if (err) {
+      return console.error(err);
+    }
+
+    // imageData 为已打上水印的缩略图数据
+  });</code></pre>
+<h2>模块结构</h2>
+<p><img src="http://ww2.sinaimg.cn/large/7287333fgw1e8263cvxeaj20mr0glgmp.jpg" alt="模块结构"></p>
+<h2>License</h2>
+<pre><code>(The MIT License)
+
+Copyright (c) 2010-2013 Will Wen Gunn &lt;willwengunn@gmail.com&gt; and other contributors
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+&#39;Software&#39;), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &#39;AS IS&#39;, WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</code></pre>
+
+      </section>
+  
+    </div>
+  </div>
+</div>
+      <footer class="footer">
+        <div class="container">
+          <p class="pull-right">
+            <a href="#">Back to top</a>
+          </p>
+          <p>此文档通过doxmate生成。主题借鉴Bootstrap API文档风格，注解基于<a href="https://github.com/visionmedia/dox">Dox</a>。欢迎关注doxmate作者<a href="http://weibo.com/shyvo" target="_blank">@朴灵</a></p>
+          <ul class="footer-links">
+            <li><a href="https://github.com/visionmedia/dox">Dox主页</a></li>
+            <li><a href="http://html5ify.com/doxmate">Doxmate主页</a></li>
+            <li><a href="https://github.com/JacksonTian/doxmate/issues?state=open">提交bug</a></li>
+          </ul>
+      </div>
+    </footer>
+    <script>
+      $(function() {
+        $('pre').addClass('prettyprint');
+        $('td pre').removeClass('prettyprint');
+        prettyPrint();
+        var $window = $(window);
+        $('.bs-docs-sidenav').affix({
+          offset: {
+            top: function () {
+              return $window.width() <= 980 ? 290 : 210
+            },
+            bottom: 270
+          }
+        });
+        $(".content").find('h1, h2, h3, h4, h5, h6').each(function () {
+          var node = $(this);
+          if (!node.attr("id")) {
+            node.attr("id", "index_" + node.text());
+          }
+          node.css("paddingTop", 40);
+        });
+      });
+    </script>
+  
+  </body>
+</html>
