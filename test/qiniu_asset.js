@@ -113,20 +113,13 @@ describe('qiniu.Asset', function() {
   describe('Asset.md2html()', function() {
     it('should convert Markdown to HTML', function(done) {
       
-      qiniu.testBucket.putFile('sample.md', __dirname + '/assets/sample.md', function(err) {
+      qiniu.testBucket.key('sample.md').md2html(function(err, html) {
         if (err) {
           throw err;
         }
 
-        qiniu.testBucket.key('sample.md').md2html(function(err, html) {
-          if (err) {
-            throw err;
-          }
-
-          done();
-        });
+        done();
       });
-
     });
   });
 
