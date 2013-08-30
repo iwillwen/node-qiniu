@@ -1,5 +1,6 @@
-var qiniu      = require('./');
-var assert     = require('assert');
+var qiniu  = require('./');
+var fs     = require('fs');   
+var assert = require('assert');
 
 var asset = qiniu.testBucket.key('gogopher.jpg');
 
@@ -66,6 +67,53 @@ describe('qiniu.Asset', function() {
       var tmp = qiniu.testBucket.key('gogopher_tmp.jpg');
 
       tmp.remove(function(err) {
+        if (err) {
+          throw err;
+        }
+
+        done();
+      });
+    });
+  });
+
+  describe('Asset.qrcode()', function() {
+    it('should return the qrcode image of the asset', function(done) {
+      
+      // imageView
+      asset.qrcode(function(err, data) {
+        if (err) {
+          throw err;
+        }
+
+        fs.writeFile(__dirname + '/assets/gogopher_qrcode.png', data, function(err) {
+          done();
+        });
+      });
+
+    });
+  });
+
+  describe('Asset.qrcode().straem()', function() {
+    it('should return the qrcode image of the asset by a stream', function(done) {
+      
+      // imageView Stream
+      var qrcodeStream = asset.qrcode().stream();
+      var writingStream = fs.createWriteStream(__dirname + '/assets/gogopher_qrcode.png');
+
+      qrcodeStream.pipe(writingStream)
+        .on('error', function(err) {
+          throw err;
+        })
+        .on('finish', function() {
+          done();
+        });
+    });
+  });
+
+  describe('Asset.md2html()', function() {
+    it('should convert Markdown to HTML', function(done) {
+      
+      qiniu.testBucket.key('sample.md').md2html(function(err, html) {
         if (err) {
           throw err;
         }

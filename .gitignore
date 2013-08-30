@@ -10,7 +10,10 @@ lib-cov
 pids
 logs
 results
+doc
+test/assets/*
 
 node_modules
+coverage.html
 **.txt
 npm_debug.log

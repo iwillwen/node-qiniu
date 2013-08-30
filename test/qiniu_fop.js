@@ -195,4 +195,62 @@ describe('qiniu.Asset.Fop', function() {
     });
   });
 
+  describe('Fop.qrcode()', function() {
+    it('should return the qrcode image of the asset', function(done) {
+      
+      // watermarks
+      asset.fop()
+        .qrcode()
+        .exec(function(err, pic) {
+          if (err) {
+            throw err;
+          }
+
+          fs.writeFile(__dirname + '/assets/gogopher_qrcode.png', pic, function(err) {
+            done();
+          });
+        });
+
+    });
+  });
+
+  describe('Fop.qrcode().stream()', function() {
+    it('should return the qrcode image of the asset by stream', function(done) {
+      
+      // watermarks
+      var imageStream = asset.fop()
+        .qrcode()
+        .stream();
+      var writingStream = fs.createWriteStream(__dirname + '/assets/gogopher_qrcode.png');
+
+      imageStream.pipe(writingStream)
+        .on('error', function(err) {
+          throw err;
+        })
+        .on('finish', function() {
+          done();
+        });
+
+    });
+  });
+
+  describe('Fop.md2html()', function() {
+    it('should convert Mardkdown to HTML', function(done) {
+      
+      // watermarks
+      qiniu.testBucket.key('sample.md').fop()
+        .md2html()
+        .exec(function(err, html) {
+          if (err) {
+            throw err;
+          }
+
+          fs.writeFile(__dirname + '/assets/sample.html', html, function(err) {
+            done();
+          });
+        });
+
+    });
+  });
+
 });
