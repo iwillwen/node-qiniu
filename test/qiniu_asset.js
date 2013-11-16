@@ -10,7 +10,7 @@ describe('qiniu.Asset', function() {
     it('should return the url of the asset', function() {
       var url = asset.url();
 
-      assert.equal(url, 'http://qiniu-sdk-test.qiniudn.com/gogopher.jpg');
+      assert.equal(url, 'http://qiniu-sdk-test.u.qiniudn.com/gogopher.jpg');
     });
   });
 
