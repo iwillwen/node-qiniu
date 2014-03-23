@@ -372,6 +372,32 @@ imagesBucket.key('exampleKey_4').remove(function(err) {
 });
 ```
 
+#### `Asset.token()`
+
+`Asset.token()`方法用于生成当前资源的下载凭证。
+
+```js
+var getToken = imagesBucket.key('exampleKey').token();
+
+console.dir(getToken);
+/*=>
+  {
+    url: '<Full download url>',
+    token: '<Get token>',
+    requestUrl: 'URL without token'
+  }
+ */
+  }
+```
+
+#### `Asset.download()`
+
+`Asset.download()`方法用于生成当前资源的下载链接。(不包含下载凭证)
+
+```js
+var url = imagesBucket.key('exampleKey').download();
+```
+
 ### `Batch` 资源批量操作
 
 在支持对单个文件资源操作的同时，七牛云存储还支持批量地对多个文件进行查看、删除、复制和移动操作。
@@ -437,6 +463,30 @@ image.fop()
 
     // imageData 为已打上水印的缩略图数据
   });
+```
+
+#### `Fop.token()`
+
+该方法用于生成当前 Fop 的下载凭证。
+
+```js
+var image = imagesBucket.key('exampleKey');
+// Image.fop 方法继承于 Asset 类
+
+var getToken = image.fop()
+  // 对图片进行缩略
+  .imageView({
+    mode   : 2,
+    height : 200
+  })
+  // 为图片打上水印
+  .watermark({
+    mode  : 1,
+    image : 'http://www.b1.qiniudn.com/images/logo-2.png'
+  })
+  .token();
+
+console.log(getToken.url);
 ```
 
 ## 模块结构
