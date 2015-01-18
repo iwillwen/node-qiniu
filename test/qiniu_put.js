@@ -28,7 +28,7 @@ describe('qiniu.Put', function() {
         .on('error', function(err) {
           throw err;
         })
-        .on('complete', function() {
+        .on('end', function() {
           done();
         });
     });

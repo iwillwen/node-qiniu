@@ -36,10 +36,10 @@
     "url": "https://www.npmjs.org/package/node-qiniu/issues"
   },
   "dependencies": {
-    "underscore": "~1.5.1",
-    "request": "~2.27.0",
+    "bufferhelper": "^0.2.0",
     "q": "~0.9.6",
-    "dataStream": "0.0.5"
+    "request": "~2.27.0",
+    "underscore": "~1.5.1"
   },
   "devDependencies": {
     "async": "~0.2.9",
