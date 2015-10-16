@@ -398,6 +398,14 @@ console.dir(getToken);
 var url = imagesBucket.key('exampleKey').download();
 ```
 
+#### `Asset.fetch()`
+
+`Asset.fetch()`方法用于从指定地址拉取链接，并保存到七牛云存储中。
+
+```js
+imagesBucket.keys('test.jpg').fetch('http://exampple.com/test.jpg')
+```
+
 ### `Batch` 资源批量操作
 
 在支持对单个文件资源操作的同时，七牛云存储还支持批量地对多个文件进行查看、删除、复制和移动操作。

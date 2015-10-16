@@ -1,6 +1,5 @@
 var qiniu      = require('./');
 var fs         = require('fs');
-var dataStream = require('dataStream');
 var assert     = require('assert');
 
 var asset = qiniu.testBucket.key('gogopher.jpg');

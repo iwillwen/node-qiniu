@@ -1,6 +1,6 @@
 {
   "name": "node-qiniu",
-  "version": "6.1.7",
+  "version": "6.1.9",
   "description": "Qiniu Resource Storage SDK for Node.js",
   "main": "index.js",
   "directories": {
@@ -36,6 +36,7 @@
     "url": "https://www.npmjs.org/package/node-qiniu/issues"
   },
   "dependencies": {
+    "bluebird": "^2.10.2",
     "bufferhelper": "^0.2.0",
     "q": "~0.9.6",
     "request": "~2.27.0",
