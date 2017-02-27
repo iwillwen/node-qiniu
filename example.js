@@ -53,7 +53,7 @@ imagesBucket.putFile('exampleKey_2', __dirname + '/assets/example.jpg')
 var puttingStream = imagesBucket.createPutStream('exampleKey_3');
 var readingStream = fs.createReadStream(__dirname + '/assets/example.jpg');
 
-readingStream.pipe(readingStream)
+readingStream.pipe(puttingStream)
   .on('error', function(err) {
     console.error(err);
   })
